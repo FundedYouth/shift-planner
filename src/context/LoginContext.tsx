@@ -19,7 +19,8 @@ export const LoginProvider: React.FC<LoginProviderProps> = ({ children }) => {
         //make an API call to login
         try {
             const res = await loginAPI(email, password);
-            console.log(res.data);
+            //console.log(res.data);
+            //console.log(res.data.data.id);
             setUserId(res.data.data.id);
             return true;
         }
