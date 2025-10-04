@@ -4,6 +4,9 @@ FundedYouth Public Tool for Setting Schedules and Shifts
 ## API
 Used the FundedYouth API for Account Management
 
+
+![reactjs-vite-tailwindcss-boilerplate](https://user-images.githubusercontent.com/16243531/217138979-b854309c-4742-4275-a705-f9fec5158217.jpg)
+
 ## What is inside?
 
 This project uses many tools like:
