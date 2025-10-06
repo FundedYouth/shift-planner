@@ -1,8 +1,11 @@
+# Shift Planner
+FundedYouth Public Tool for Setting Schedules and Shifts
+
+## API
+Used the FundedYouth API for Account Management
+
+
 ![reactjs-vite-tailwindcss-boilerplate](https://user-images.githubusercontent.com/16243531/217138979-b854309c-4742-4275-a705-f9fec5158217.jpg)
-
-# React Tailwindcss Boilerplate build with Vite
-
-This is a boilerplate build with Vite, React 18, TypeScript, Vitest, Testing Library, TailwindCSS 3, Eslint and Prettier.
 
 ## What is inside?
 
@@ -78,3 +81,4 @@ pnpm run test:ui
 ## License
 
 This project is licensed under the MIT License.
+
