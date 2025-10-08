@@ -2,60 +2,56 @@
 FundedYouth Public Tool for Setting Schedules and Shifts
 
 ## API
-Used the FundedYouth API for Account Management
+Uses the [FundedYouth API](https://github.com/FundedYouth-Team/raw-php-api) for account management and data storage.
+
+---
 
 ## Structure and Local Testing
 
-## Setting up Docker
+### Folder structure
 
-1. Update files based on your CPU
-2. Change your `.env.example` to `.env` and add your MariaDB credentials
-3. Setup your docker environment with Docker Compose
-4. Make sure Litespeed Web Server is running in Docker
-5. Open a browser: `http://localhost/api/` - If everything is configured correctly you should see:
-
-```json
-{ "msg": "Connected" }
+```bash
+project-root/
+├── frontend/              # React TypeScript frontend
+├── api/                   # FundedYouth raw PHP API
+│   ├── docker-compose.yml # defines PHP, DB, phpMyAdmin
+├── Docker/                # top-level Compose orchestration
+│   └── docker-compose.yml
+└── README.md
 ```
 
-### Updating files for AMD
+### CPU Architecture Note (ARM vs x86_64)
 
-This repository was developed with ARM based CPUs in mind. If you have an AMD CPU then you will have to make the following changes.
+This project was initially configured for ARM64 CPUs (e.g., Apple Silicon).
+If you are running on Intel or AMD (x86_64), make the following adjustments:
 
-In `Dockerfile` change:
-
-```
+In `api/Dockerfile` change:
+```dockerfile
 FROM ghcr.io/ndigitals/openlitespeed:latest
 ```
-
 to
-
-```
+```dockerfile
 FROM litespeedtech/openlitespeed:latest
 ```
 
-In `docker-compose.yml` change:
-
-```
+In `api/docker-compose.yml` change:
+```yaml
     platform: linux/arm64
 ```
-
 to
-
-```
+```yaml
     image: litespeedtech/openlitespeed:latest
 ```
 
-### Docker Compose
+### Docker Setup
 
-Make sure you clone the whole repo. This must include the `Dockerfile` and the `docker-compose.yml`
+The `/Docker/docker-compose.yml` file includes the backend’s existing compose configuration from `/api/docker-compose.yml`.
 
-🏃‍➡️ Run Docker Compose in `detached-mode`.
-
-Docker must be running. This means `Mac` and `Windows` users make sure you are running `Docker Desktop` in the background. Running this command will create a new docker service called "raw-php-api".
+To start all services (frontend + backend + database):
 
 ```bash
-docker compose up -d
+cd Docker
+docker compose up --build
 ```
 
 (Mac) - Adjust this command for your operating system.
@@ -65,52 +61,37 @@ docker compose up -d
 If everything works properly you will get a new folder called `db`. You can check that this has the correct structure by running:
 
 ```bash
-docker exec -it raw-php-api-mariadb-1 mysql -u $DB_USERNAME -p
+docker exec -it raw-php-api-mariadb-1 mysql -u example_user -p
 ```
+Then enter the password defined in `.env` (default: `example_password`).
 
-then type your database password from .env
+Inside MySQL:
 
-Check you have a databse.
-
-```SQL
+```sql
 SHOW DATABASES;
-```
-
-Now to check the tables.
-
-```SQL
-USE *database_name;
+USE funded_youth; -- or your database name
 SHOW TABLES;
+SELECT * FROM table_name;
 ```
 
-the output should be:
-
-asdfasdfas TODO: ADD THIS
-
-To check that you have data already in the tables run
-
-```SQL
-SELECT * FROM *table_name
-```
-
-By default the `db-model/02_fake_data.sql` adds the following data:
-
-asdfasdfasdfasdf TODO: ADD THIS
+By default, `/api/db-model/02_fake_data.sql` seeds the database with sample data.
 
 ## Running the Webserver
 
 For more detailed instructions read `./frontend/README.md`
 
-Install dependencies with:
+Basic usage:
 
 ```bash
+cd frontend
 pnpm install
+pnpm run dev
 ```
 
-start dev with:
+to get Axios to pull the api correctly you will need to create `/frontend/.env` and add
 
-```bash
-pnpm run dev
+```env
+VITE_API_BASE_URL=http://localhost
 ```
 
 ## License
