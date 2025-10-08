@@ -20,6 +20,22 @@ project-root/
 └── README.md
 ```
 
+### How to Run
+
+1. Clone this repo
+2. Change your `api/.env.example` to `api/.env` and add your MariaDB credentials
+3. Setup your Docker environment with Docker Compose
+4. Make sure Litespeed Web Server is running in Docker
+5. Open a browser: `http://localhost/api/` - If everything is configured correctly you should see:
+
+```json
+{ "msg": "Connected" }
+```
+
+6. Start your web server with `pnpm run dev`.
+7. Open `http://localhost:5173` to view the website.
+
+
 ### CPU Architecture Note (ARM vs x86_64)
 
 This project was initially configured for ARM64 CPUs (e.g., Apple Silicon).
@@ -53,15 +69,35 @@ to
       - ./:/var/www/vhosts/localhost/html
 ```
 
+This changes the image to an architecture compatible with x86 avoiding errors from emulating ARM processors.
+
+## Environment Variables (.env)
+
+▶️ **Development** this is set to `mariadb` to reference the Docker Container. Otherwise you might not be able to connect, since you are not running the api directly in docker.
+
+Change the `api/.env.example` to `api/.env` and enter in your desired credentials
+
+```yaml
+# .env.example
+# # Production
+# DB_HOST=XXX.XXX.XXX.XXX
+
+# Development
+DB_HOST=mariadb
+
+# Common
+DB_NAME=
+DB_USER=
+DB_PASS=
+```
+
 ### Docker Setup
 
-The `/Docker/docker-compose.yml` file includes the backend’s existing compose configuration from `/api/docker-compose.yml`.
-
-To start all services (frontend + backend + database):
+To start all services (backend + database):
 
 ```bash
-cd Docker
-docker compose up --build
+cd api
+docker compose up -d
 ```
 
 (Mac) - Adjust this command for your operating system.
@@ -73,7 +109,7 @@ If everything works properly you will get a new folder called `db`. You can chec
 ```bash
 docker exec -it raw-php-api-mariadb-1 mysql -u example_user -p
 ```
-Then enter the password defined in `.env` (default: `example_password`).
+Then enter the password defined in `api/.env`.
 
 Inside MySQL:
 
@@ -81,27 +117,26 @@ Inside MySQL:
 SHOW DATABASES;
 USE funded_youth; -- or your database name
 SHOW TABLES;
-SELECT * FROM table_name;
+SELECT * FROM table_name; -- one of roles, users, dates
 ```
 
-By default, `/api/db-model/02_fake_data.sql` seeds the database with sample data.
+By default, `/api/db-model/02_fake_data.sql` seeds the database with sample data. If you don't want the fake testing data then delelete this file before building. Otherwise you can drop the tables to erase all values.
 
-## Running the Webserver
+## Running the Web Server
 
 For more detailed instructions read `./frontend/README.md`
 
+
 Basic usage:
+
+Rename `frontend/.env.example` to `frontend/.env.development`
+
+If you go into production you will have to create a similar `.env.production` file that has information on calling the api over the web.
 
 ```bash
 cd frontend
 pnpm install
 pnpm run dev
-```
-
-to get Axios to pull the api correctly you will need to create `/frontend/.env` and add
-
-```env
-VITE_API_BASE_URL=http://localhost
 ```
 
 ## License
