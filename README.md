@@ -42,6 +42,16 @@ to
 ```yaml
     image: litespeedtech/openlitespeed:latest
 ```
+and 
+```yaml
+    volumes:
+      - ./src:/var/www/vhosts/localhost/html
+```
+to
+```yaml
+    volumes:
+      - ./:/var/www/vhosts/localhost/html
+```
 
 ### Docker Setup
 
