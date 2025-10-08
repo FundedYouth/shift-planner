@@ -8,6 +8,19 @@ Uses the [FundedYouth API](https://github.com/FundedYouth-Team/raw-php-api) for 
 
 ## Structure and Local Testing
 
+![alt text](/readme-media/shift-planner_BasicFlow.svg "Title")
+
+By default, we create 4 fake users:
+
+| Name | Email | Password |
+|---|:---:|---:|
+| Alice Smith | alice@example.com | password123 |
+| Bob Jones | bob@example.com | password123 |
+| Carol Lee | carol@example.com | password123 |
+| David Brown | david@example.com | password123 |
+
+If you want to add more you will have to manually add those by going into the MariaDB and manually adding them.
+
 ### Folder structure
 
 ```bash
@@ -15,8 +28,6 @@ project-root/
 ├── frontend/              # React TypeScript frontend
 ├── api/                   # FundedYouth raw PHP API
 │   ├── docker-compose.yml # defines PHP, DB, phpMyAdmin
-├── Docker/                # top-level Compose orchestration
-│   └── docker-compose.yml
 └── README.md
 ```
 
